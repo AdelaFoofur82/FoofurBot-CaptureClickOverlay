@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FoofurBot - CaptureClickOverlay Overlay</title>
+
+    <!-- Twitch -->
+    <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
+
+    <!-- FoofurBot Extension -->
+    <link rel="stylesheet" href="css/foofurbot-extension.css">
+
+    <!-- This File -->
+    <style>
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            cursor: url(img/pointer.png) 10 10 default;
+        }
+    </style>
+    <style id="overlay_style"></style>
+</head>
+
+<body>
+    <!-- JQUERY -->
+    <script src="vendor/jquery/jquery-3.6.0.min.js"></script>
+    
+    <!-- FoofurBot Extension -->
+    <script src="js/websocket.js"></script>
+    <script src="js/foofurbot-extension.js"></script>
+    <script src="js/foofurbot-websocket.js"></script>
+
+    <!-- This File -->
+    <script src="video_overlay.js"></script>
+</body>
+
+</html>

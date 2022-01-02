@@ -1,0 +1,17 @@
+body, * {
+    background-color: transparent;
+}
+
+button {
+    margin: 0.25rem 0.125rem;
+}
+
+.alert {
+    margin: 1rem;
+}
+
+section {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
