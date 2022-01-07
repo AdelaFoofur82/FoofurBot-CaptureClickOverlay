@@ -5,11 +5,11 @@
     <title>Config FoofurBot - CaptureClickOverlay Extension</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
 
     <!-- Highlight.js -->
-    <link rel="stylesheet" href="vendor/highlight/default-11.3.1.min.css">
-    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+
     <!-- CustonHTML -->
     <link rel="stylesheet" href="css/foofurbot-extension.css">
 
@@ -44,21 +44,23 @@
                 <label for="websocket" class="form-label">Type in a websocket URL where you want viewer interactions
                     to be sent <i>(SSL
                         mandatory)</i></label>
-                <div class="input-group">
-                    <div class="input-group-text" style="font-family: monospace;">wss://</div>
-                    <input type="text" class="form-control" id="websocket" name="websocket"
-                        placeholder="myowwebsocket.server:8888">
-                </div>
-                <div class="alert alert-danger">Be sure you are under control of the server typed above! Information of your viewers will be sent to that server.</div>
+            <div class="input-group">
+                <div class="input-group-text" style="font-family: monospace;">wss://</div>
+                <input type="text" class="form-control" id="websocket" name="websocket"
+                    placeholder="myowwebsocket.server:8888">
+            </div>
+            <div class="alert alert-danger">Be sure you are under control of the server typed above! Information of your
+                viewers will be sent to that server.</div>
             </p>
 
             <p class="mb3">
                 <label for="mousemoveTimeStep" class="form-label">Time step to capture mousemove events</label>
                 <input type="text" class="form-control" id="mousemoveTimeStep" name="mousemoveTimeStep"
                     placeholder="200" value="200">
-                <div class="form-text">0 for not sending mousemove events. Don't low it too much in order not to saturate your server or viewers connection.</div>
+            <div class="form-text">0 for not sending mousemove events. Don't low it too much in order not to saturate
+                your server or viewers connection.</div>
             </p>
-            
+
             <input type="submit" class="btn btn-primary" value="GUARDAR" />
         </form>
     </section>
@@ -67,57 +69,59 @@
         <p>Here there is an example of the JSON message sent to the WebSocket Server.</p>
         <pre><code>{
     "provider": "FoofurBot",
-    "event": "click", // Name of the event. May be 'click', 'mousedown', 'mouseup', 'mousemove' or 'mousedrag'
-    "user": {
-        "id": "582408410", // Twitch User ID of the viewer if granted permission. Null otherwise
-        "opaqueId": "U582408410", // An unique user ID given by twitch for anonymous viewers
-        "role": "broadcaster",
-        "isLinked": true, // If the 'id' field corresponds to an actual Twitch viewer ID
-        "subscriptionStatus": null // State of subscription of the viewer
-    },
-    "context": {
-        "language": "en",
-        "theme": "dark", // It may be 'light'
-        "isVideoAdShowing": false,
-        "arePlayerControlsVisible": false,
-        "game": "Animals, Aquariums, and Zoos",
-        "bitrate": 6000224,
-        "bufferSize": 1.383139,
-        "displayResolution": "842x473",
-        "hlsLatencyBroadcaster": 1.637999,
-        "isFullScreen": false,
-        "isPaused": false,
-        "isTheatreMode": false,
-        "isMuted": true,
-        "playerChannel": "foofurbot", // your channel ;)
-        "videoResolution": "1280x720",
-        "volume": 0.5,
-        "playbackMode": "video",
-        "mode": "viewer"
-    },
+    "event": "click", // Name of the event. May be 'click', 'mousedown', 'mouseup', 'mousemove' or 'mousedrag',
     "data": {
-        "width": 841, // current size of the viewport
-        "height": 473,
-        "x": 249, // current point of triggered event
-        "y": 315,
-        "percentX": 0.29607609988109396, // relative position to the current screen of the triggered event
-        "percentY": 0.6659619450317125,
-        "button": 0 // '0' for left click, '1' for right click. It may capture another buttons as well
+        "user": {
+            "id": "582408410", // Twitch User ID of the viewer if granted permission. Null otherwise
+            "opaqueId": "U582408410", // An unique user ID given by twitch for anonymous viewers
+            "role": "broadcaster",
+            "isLinked": true, // If the 'id' field corresponds to an actual Twitch viewer ID
+            "subscriptionStatus": null // State of subscription of the viewer
+        },
+        "context": {
+            "language": "en",
+            "theme": "dark", // It may be 'light'
+            "isVideoAdShowing": false,
+            "arePlayerControlsVisible": false,
+            "game": "Animals, Aquariums, and Zoos",
+            "bitrate": 6000224,
+            "bufferSize": 1.383139,
+            "displayResolution": "842x473",
+            "hlsLatencyBroadcaster": 1.637999,
+            "isFullScreen": false,
+            "isPaused": false,
+            "isTheatreMode": false,
+            "isMuted": true,
+            "playerChannel": "foofurbot", // your channel ;)
+            "videoResolution": "1280x720",
+            "volume": 0.5,
+            "playbackMode": "video",
+            "mode": "viewer"
+        },
+        "data": {
+            "width": 841, // current size of the viewport
+            "height": 473,
+            "x": 249, // current point of triggered event
+            "y": 315,
+            "percentX": 0.29607609988109396, // relative position to the current screen of the triggered event
+            "percentY": 0.6659619450317125,
+            "button": 0 // '0' for left click, '1' for right click. It may capture another buttons as well
+        }
     }
 }</code></pre>
     </section>
 
     <!-- Twitch -->
-    <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
+    <script src="//extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
 
     <!-- JQUERY -->
-    <script src="vendor/jquery/jquery-3.6.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Bootstrap -->
-    <script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Highlight.js -->
-    <script src="vendor/highlight/highlight-11.3.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
 
     <!-- CustonHTML -->
     <script src="js/foofurbot-extension.js"></script>

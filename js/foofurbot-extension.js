@@ -60,7 +60,7 @@ window.FoofurBotExtension.trigger = function (eventType, extraParameters) {
 };
 
 window.FoofurBotExtension.send = function (event, data) {
-    window.FoofurBotExtension.trigger('send', { provider: 'FoofurBot', event, user: window.FoofurBotExtension.viewer, context: window.FoofurBotExtension.context, data });
+    window.FoofurBotExtension.trigger('send', { provider: 'FoofurBot', event, data: { user: window.FoofurBotExtension.viewer, context: window.FoofurBotExtension.context, data } });
 };
 
 window.FoofurBotExtension.isMe = function (userData) {
