@@ -3,17 +3,7 @@ const CCO = window.FoofurBotExtension.CaptureClickOverlay;
 CCO.isDrag = false;
 
 window.FoofurBotExtension.on('onChangedConfiguration', (event, configuration) => {
-    const fields = configuration.fields;
-
-    for (var i in fields) {
-        const value = fields[i].value;
-        const field = fields[i].name;
-        switch (field) {
-            case 'mousemoveTimeStep':
-                CCO.mousemoveTimeStep = parseInt(value);
-                break;
-        }
-    }
+    CCO.mousemoveTimeStep = configuration.fields.mousemoveTimeStep || CCO.mousemoveTimeStep;
 });
 
 function getDataFromMouseEvent(e) {

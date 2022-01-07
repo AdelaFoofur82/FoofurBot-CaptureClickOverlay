@@ -23,6 +23,16 @@
         .form-text {
             font-style: italic;
         }
+
+        #currentCursorImage {
+            width: 20px;
+        }
+
+        #cursorImage {
+            width: 95%;
+            display: inline-block;
+            margin-right: 1rem;
+        }
     </style>
 </head>
 
@@ -48,7 +58,7 @@
                     placeholder="200" value="200">
                 <div class="form-text">0 for not sending mousemove events. Don't low it too much in order not to saturate your server or viewers connection.</div>
             </p>
-
+            
             <input type="submit" class="btn btn-primary" value="GUARDAR" />
         </form>
     </section>
