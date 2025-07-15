@@ -1,3 +1,4 @@
+const ons = [];
 function createWebsocket(url) {
     let obj = {};
     function connectWebSocket(url) {
@@ -25,6 +26,15 @@ function createWebsocket(url) {
         obj.connection.addEventListener("error", function (err) {
             obj.connection.close();
         });
+
+        obj.connection.addEventListener("open", () => {
+            ons.forEach(cbArgs => {
+                if (cbArgs[0] == "open")
+                    cbArgs[1].apply(obj.connection);
+                else
+                    obj.connection.addEventListener.apply(obj.connection, cbArgs);
+            });
+        });
     }
 
     try {
@@ -33,25 +43,28 @@ function createWebsocket(url) {
         const websocketObject = {
             send: (msg) => {
                 if (typeof (msg) == "object") msg = JSON.stringify(msg);
-    
+
                 return new Promise((res, rej) => {
                     obj.connection.addEventListener("message", function (e) {
                         res(e.data);
                     });
-    
+
                     obj.connection.send(msg);
-    
+
                     setTimeout(() => {
                         res();
                     }, 5000);
                 });
+            },
+            on: function () {
+                ons.push(arguments);
             },
             socket: obj.connection,
             isReady: () => {
                 return obj.connection.readyState == obj.connection.OPEN;
             }
         };
-    
+
         return websocketObject;
     } catch (e) {
         return null;

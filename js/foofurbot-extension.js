@@ -8,6 +8,30 @@ window.Twitch.ext.configuration.onChanged(() => {
     }
 });
 
+function consumeStreamToJson(response) {
+    return new Promise((res,rej) => {
+        const reader = response.body.getReader();
+        res(new ReadableStream({
+            start(controller) {
+                return pump();
+                function pump() {
+                    return reader.read().then(({ done, value }) => {
+                        // When no more data needs to be consumed, close the stream
+                        if (done) {
+                            controller.close();
+                            return;
+                        }
+                        // Enqueue the next data chunk into our target stream
+                        controller.enqueue(value);
+                        return pump();
+                    });
+                }
+            }
+        }));
+    }).then(stream => new Response(stream))
+    .then(response =>response.json());
+}
+
 window.Twitch.ext.onAuthorized((auth) => {
     window.FoofurBotExtension.channelId = auth.channelId;
 
@@ -20,7 +44,36 @@ window.Twitch.ext.onAuthorized((auth) => {
         subscriptionStatus: _v.subscriptionStatus
     };
 
-    window.FoofurBotExtension.trigger('onAuthorized', auth);
+    if (_v.isLinked) {
+        fetch(`https://api.twitch.tv/helix/users?id=${_v.id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Extension ${auth.helixToken}`,
+                'Client-Id': `${auth.clientId}`
+            }
+        }).then(consumeStreamToJson)
+        .then(json => {
+            const user = json.data[0];
+            window.FoofurBotExtension.viewer = {
+                ...window.FoofurBotExtension.viewer, 
+                login: user.login,
+                display_name: user.display_name,
+                profile_image_url: user.profile_image_url
+            };
+        }).then(() => fetch(`https://api.twitch.tv/helix/users/follows?from_id=${_v.id}&to_id=${auth.channelId}&first=1`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Extension ${auth.helixToken}`,
+                'Client-Id': `${auth.clientId}`
+            }}))
+        .then(consumeStreamToJson)
+        .then(json => {
+            window.FoofurBotExtension.viewer.isFollower = json.length == 1;
+            window.FoofurBotExtension.trigger('onAuthorized', auth);
+        }).catch(e => {
+            console.error(e);
+        });
+    }
 });
 
 window.Twitch.ext.onContext((ctx) => {
@@ -59,14 +112,6 @@ window.FoofurBotExtension.trigger = function (eventType, extraParameters) {
     window.FoofurBotExtension._events.trigger(eventType, extraParameters);
 };
 
-window.FoofurBotExtension.send = function (event, data) {
-    window.FoofurBotExtension.trigger('send', { provider: 'FoofurBot', event, user: window.FoofurBotExtension.viewer, context: window.FoofurBotExtension.context, data });
-};
-
 window.FoofurBotExtension.isMe = function (userData) {
     return userData.opaqueId == window.FoofurBotExtension.viewer.opaqueId;
 }
-
-$(() => {
-
-});

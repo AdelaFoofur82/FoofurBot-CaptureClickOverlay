@@ -5,10 +5,7 @@
     <title>Config FoofurBot - CaptureClickOverlay Extension</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css" />
-
-    <!-- Highlight.js -->
-    <link rel="stylesheet" href="vendor/highlight/default-11.3.1.min.css">
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.css" />
     
     <!-- CustonHTML -->
     <link rel="stylesheet" href="css/foofurbot-extension.css">
@@ -40,69 +37,249 @@
     <section>
         <form name="config" id="config">
             <h3>General Configuration</h3>
-            <p class="mb3">
+            <p>
                 <label for="websocket" class="form-label">Type in a websocket URL where you want viewer interactions
-                    to be sent <i>(SSL
-                        mandatory)</i></label>
+                    to be sent <i>(SSL mandatory)</i></label>
+                <div class="alert alert-primary">Due to Content Security Policy directives your WebSocket server needs to be served through our proxy. You can find the code used on the 
+                    proxy on <a target="_blank" href="https://github.com/AdelaFoofur82/foofurbot-webproxy">GitHub</a>.
+                    If you don't want to use the proxy, feel free to 
+                    <a target="_blank" href="mailto:foofurbot@eines.net">contact me</a> and I can configure the extension to connect directly to your server... but it'll take time, 
+                    because Twitch needs to review it.</div>
                 <div class="input-group">
                     <div class="input-group-text" style="font-family: monospace;">wss://</div>
                     <input type="text" class="form-control" id="websocket" name="websocket"
                         placeholder="myowwebsocket.server:8888">
                 </div>
-                <div class="alert alert-danger">Be sure you are under control of the server typed above! Information of your viewers will be sent to that server.</div>
+                <div class="alert alert-danger">Be sure the server typed above is under your control! Information of your viewers will be sent to that server.</div>
             </p>
+            <p>
+                <label for="cursor_image" class="form-label">URL of the image for mouse cursor</label>
+                <input type="text" class="form-control" id="cursor_image" name="cursor_image" val="/img/pointer.png">
+                <label for="clicked_image" class="form-label">URL of the image for mouse cursor when clicked</label>
+                <input type="text" class="form-control" id="clicked_image" name="clicked_image" val="/img/clicked.png">
+            </p> 
 
-            <p class="mb3">
-                <label for="mousemoveTimeStep" class="form-label">Time step to capture mousemove events</label>
-                <input type="text" class="form-control" id="mousemoveTimeStep" name="mousemoveTimeStep"
-                    placeholder="200" value="200">
-                <div class="form-text">0 for not sending mousemove events. Don't low it too much in order not to saturate your server or viewers connection.</div>
+            <h3>Events Configuration</h3>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="mouseDown">
+                            <label class="form-check-label" for="mouseDown">Mouse down (click)</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="mouseUp">
+                            <label class="form-check-label" for="mouseUp">Mouse up</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="mouseDblClick">
+                            <label class="form-check-label" for="mouseDblClick">Mouse double-click</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="mouseWheel">
+                            <label class="form-check-label" for="mouseWheel">Mouse wheel</label>
+                        </div>
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="mouseMove">
+                            <label class="form-check-label" for="mouseMove">Mouse move</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="mouseDrag">
+                            <label class="form-check-label" for="mouseDrag">Mouse drag</label>
+                        </div>
+                    </div>
+                </div>   
+                <p>
+                    <label for="mousemoveTimeStep" class="form-label">Time step to capture mousemove events (in ms)</label>
+                    <input type="text" class="form-control" id="mousemoveTimeStep" name="mousemoveTimeStep"
+                        value="200">
+                    <div class="form-text">Don't low it too much in order not to saturate your server or viewers connection.</div>
+                </p>    
+            </fieldset>
+                <p>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="keyPress">
+                            <label class="form-check-label" for="keyPress">Key press</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="keyDown">
+                            <label class="form-check-label" for="keyDown">Key down</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="keyUp">
+                            <label class="form-check-label" for="keyUp">Key up</label>
+                        </div>
+                    </div>
+                </div>
+                </p>
+          
+            <fieldset class="form-group">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="text">
+                            <label class="form-check-label" for="text">Send text typed</label>
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <div class="form-text">For capturing text input instead of every single key stroke.</div>
+                    </div>
+                </div>
+                <p>
+                    <label for="textTimeStep" class="form-label">Time step to capture text events (in ms)</label>
+                    <input type="text" class="form-control" id="textTimeStep" name="textTimeStep"
+                       value="500">
+                </p>   
+            </fieldset>    
+            <fieldset class="form-group">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="gamepadPress">
+                            <label class="form-check-label" for="gamepadPress">Send gamepad events</label>
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    <label for="gamepadPressTimeStep" class="form-label">Time step to capture gamepad events (in ms)</label>
+                    <input type="text" class="form-control" id="gamepadPressTimeStep" name="gamepadPressTimeStep"
+                       value="100">
+                </p>   
+            </fieldset>                      
+            <fieldset class="form-group">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="showKeyTooltip">
+                            <label class="form-check-label" for="showKeyTooltip">Show key tooltip</label>
+                        </div>
+                    </div>
+                    <div class="col-9">
+                        <div class="form-text">Show a tooltip to the viewer for every key pressed or gamepad event.</div>
+                    </div>
+                </div>   
+                <p>
+                    <label for="keyTooltipShowTime" class="form-label">Time the tooltip is shown to the viewer (in ms)</label>
+                    <input type="text" class="form-control" id="keyTooltipShowTime" name="keyTooltipShowTime" value="1000">
+                </p> 
+            <p>
+                <label for="tooltipCSS" class="form-label">CSS style for the tooltip</label>
+                <input type="text" class="form-control" id="tooltipCSS" name="tooltipCSS" value="color: white; font-family: sans-serif; text-shadow: 1px 1px black;">
+            </p> 
+            </fieldset>
+
+            <p>
+            <input type="submit" class="btn btn-primary" value="SAVE" />
             </p>
-            
-            <input type="submit" class="btn btn-primary" value="GUARDAR" />
         </form>
     </section>
     <section>
         <h3>Documentation</h3>
         <p>Here there is an example of the JSON message sent to the WebSocket Server.</p>
-        <pre><code>{
-    "provider": "FoofurBot",
-    "event": "click", // Name of the event. May be 'click', 'mousedown', 'mouseup', 'mousemove' or 'mousedrag'
-    "user": {
-        "id": "582408410", // Twitch User ID of the viewer if granted permission. Null otherwise
-        "opaqueId": "U582408410", // An unique user ID given by twitch for anonymous viewers
-        "role": "broadcaster",
-        "isLinked": true, // If the 'id' field corresponds to an actual Twitch viewer ID
-        "subscriptionStatus": null // State of subscription of the viewer
-    },
-    "context": {
-        "language": "en",
-        "theme": "dark", // It may be 'light'
-        "isVideoAdShowing": false,
-        "arePlayerControlsVisible": false,
-        "game": "Animals, Aquariums, and Zoos",
-        "bitrate": 6000224,
-        "bufferSize": 1.383139,
-        "displayResolution": "842x473",
-        "hlsLatencyBroadcaster": 1.637999,
-        "isFullScreen": false,
-        "isPaused": false,
-        "isTheatreMode": false,
-        "isMuted": true,
-        "playerChannel": "foofurbot", // your channel ;)
-        "videoResolution": "1280x720",
-        "volume": 0.5,
-        "playbackMode": "video",
-        "mode": "viewer"
-    },
-    "data": {
-        "width": 841, // current size of the viewport
-        "height": 473,
-        "x": 249, // current point of triggered event
-        "y": 315,
-        "percentX": 0.29607609988109396, // relative position to the current screen of the triggered event
-        "percentY": 0.6659619450317125,
-        "button": 0 // '0' for left click, '1' for right click. It may capture another buttons as well
+        <pre><code id="example_json">{
+    "provider": "FoofurBot CaptureClickOverlay",
+    "event": "mousedown", // Type of the event. May be 'mousedown', 'mouseup', 'mousemove', 'mousedrag', 
+                          // 'wheel', 'keypress', 'keydown', 'keyup', 'text', 'gamepadPress' or 'gamepadAxis'
+    "data" : {
+        "user": {
+            "id": "582408410", // Twitch User ID of the viewer if granted permission. Null otherwise
+            "opaqueId": "U582408410", // An unique user ID given by twitch for anonymous viewers
+            "role": "broadcaster",
+            "isLinked": true, // If the 'id' field corresponds to an actual Twitch viewer ID
+            "subscriptionStatus": null // State of subscription of the viewer
+
+            "isFollower": false // or true
+
+            "login": "foofurbot",
+            "display_name": "FoofurBot",
+            "profile_image_url": "https://static-cdn.jtvnw.net/...",
+        },
+        "context": {
+            "language": "en",
+            "theme": "dark", // It may be 'light'
+            "isVideoAdShowing": false,
+            "arePlayerControlsVisible": false,
+            "game": "Animals, Aquariums, and Zoos",
+            "bitrate": 6000224,
+            "bufferSize": 1.383139,
+            "displayResolution": "842x473",
+            "hlsLatencyBroadcaster": 1.637999,
+            "isFullScreen": false,
+            "isPaused": false,
+            "isTheatreMode": false,
+            "isMuted": true,
+            "playerChannel": "foofurbot", // your channel ;)
+            "videoResolution": "1280x720",
+            "volume": 0.5,
+            "playbackMode": "video",
+            "mode": "viewer"
+        },
+        "event_data": {
+            /* for mouse events */
+            "width": 841, // current size of the viewport
+            "height": 473,
+            "x": 249, // current point of triggered event
+            "y": 315,
+            "percentX": 0.29607609988109396, // relative position to the current screen of the triggered event
+            "percentY": 0.6659619450317125,
+            "button": 0 // '0' for left click, '1' for right click. It may capture another buttons as well
+
+            /* for wheel events */
+            "width": 841, // current size of the viewport
+            "height": 473,
+            "x": 249, // current point of triggered event
+            "y": 315,
+            "percentX": 0.29607609988109396, // relative position to the current screen of the triggered event
+            "percentY": 0.6659619450317125,
+            "deltaX": 0, // horizontal scroll amount
+            "deltaY": 100, // vertical scroll amount
+            "deltaZ": 0, // z-axis scroll amount 
+            "deltaMode": 0, // 0: delta* values in pixels, 1: delta* values in lines, 2: delta* values in pages
+            "wheelDelta": -120, // distance in pixels 
+            "wheelDeltaX": 0, // horizontal scroll amount in pixels
+            "wheelDeltaY": -120 // vertical scroll amount in pixels
+
+            /* for key events */
+            "code": "KeyF",
+            "keyCode": 102,
+            "key": "f",
+            "charCode": 102,
+            "altKey": false, // if alt key is pressed
+            "ctrlKey": false, // if ctrl key is pressed
+            "metaKey": false, // if meta (windows) key is pressed
+            "repeat": false, 
+            "shiftKey": true // if shift key is pressed
+
+            /* for text events */
+            "text": "text typed by the user",
+
+            /* for gamepad button press events */
+            "gamepad": 0, // id of the gamepad where
+            "button": 1, // id of the button pressed
+
+            /* for gamepad axes events */
+            "gamepad": 0, // id of the gamepad where
+            "axis": 1, // id of the axis
+            "value": 1, // value of the axis
+        }
     }
 }</code></pre>
     </section>
@@ -111,13 +288,10 @@
     <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
 
     <!-- JQUERY -->
-    <script src="vendor/jquery/jquery-3.6.0.min.js"></script>
+    <script src="vendor/jquery/jquery-3.6.0.js"></script>
 
     <!-- Bootstrap -->
-    <script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
-
-    <!-- Highlight.js -->
-    <script src="vendor/highlight/highlight-11.3.1.min.js"></script>
+    <script src="vendor/bootstrap/bootstrap.bundle.js"></script>
 
     <!-- CustonHTML -->
     <script src="js/foofurbot-extension.js"></script>
