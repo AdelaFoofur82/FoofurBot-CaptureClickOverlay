@@ -112,6 +112,13 @@ window.FoofurBotExtension.trigger = function (eventType, extraParameters) {
     window.FoofurBotExtension._events.trigger(eventType, extraParameters);
 };
 
+<<<<<<< HEAD
+=======
+window.FoofurBotExtension.send = function (event, data) {
+    window.FoofurBotExtension.trigger('send', { provider: 'FoofurBot', event, data: { user: window.FoofurBotExtension.viewer, context: window.FoofurBotExtension.context, data } });
+};
+
+>>>>>>> 9e8ed0ec7b17b8f69e9948586d13a3b7f7a2324d
 window.FoofurBotExtension.isMe = function (userData) {
     return userData.opaqueId == window.FoofurBotExtension.viewer.opaqueId;
 }
